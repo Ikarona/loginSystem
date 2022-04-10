@@ -1,0 +1,25 @@
+CC=g++
+CFLAGS= -c -Wall
+
+PROJECT_NAME = password_keeper
+CURRENT_DIR=$(shell pwd)
+
+DB_NAME=sqlite
+LIB_VERSION=3
+DB_LIB_NAME=$(DB_NAME)$(LIB_VERSION)
+
+INCLUDE_DIRS = -I$(CURRENT_DIR) -I$(CURRENT_DIR)/$(DB_NAME)
+CXXFLAGS += $(INCLUDE_DIRS)
+
+LDFLAGS=-L$(CURRENT_DIR) -l$(DB_LIB_NAME)
+SOURCES=$(wildcard *.cpp)
+OBJECTS=$(SOURCES:.cpp=.o)
+
+all: $(SOURCES) $(PROJECT_NAME)
+
+$(PROJECT_NAME): $(OBJECTS)
+	$(CC) $(OBJECTS) $(LDFLAGS)  -o $@
+	rm *.o
+
+.cpp.o:
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) $< -o $@
