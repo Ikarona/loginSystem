@@ -55,13 +55,16 @@ int UpdatePassword( sqlite3* db, const std::string& siteAddr )
     GetUserPassword( newPasswd );
     char* errMsg;
     sqlUpdateReq = "UPDATE PASSWORDS set PASSWORD='" + newPasswd + "' where SITE = '" + siteAddr + "';";
+    newPasswd.clear();
     if( SQLITE_OK != sqlite3_exec( db, sqlUpdateReq.c_str(), callback, 0, &errMsg ) )
     {
+        sqlUpdateReq.clear();
         std::cerr << "Problems with req exec" << std::endl
                     << "SQL error: " << errMsg << std::endl;
         sqlite3_free( errMsg );
         return EXIT_FAILURE;
     }
+    sqlUpdateReq.clear();
     sqlite3_finalize( pStmt );
     return EXIT_SUCCESS;
 
