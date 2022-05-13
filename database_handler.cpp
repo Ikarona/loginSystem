@@ -50,12 +50,15 @@ int UpdatePassword( sqlite3* db, const std::string& siteAddr )
         std::cerr << "No such record in database." << std::endl;
     }
 
+    // std::vector< uint8_t > newPasswd;
     std::string newPasswd;
     std::cout << "Enter new password: ";
     GetUserPassword( newPasswd );
+
+    // std::string newPasswdString( reinterpret_cast< char* >( newPasswd.data() ), newPasswd.size() );
     char* errMsg;
     sqlUpdateReq = "UPDATE PASSWORDS set PASSWORD='" + newPasswd + "' where SITE = '" + siteAddr + "';";
-    newPasswd.clear();
+    // newPasswd.clear();
     if( SQLITE_OK != sqlite3_exec( db, sqlUpdateReq.c_str(), callback, 0, &errMsg ) )
     {
         sqlUpdateReq.clear();
@@ -158,7 +161,7 @@ sqlite3* OpenDataBase( const std::string& dbName )
         std::string sqlCreateReq( "CREATE TABLE PASSWORDS("  \
                                   "SITE CHAR(50) PRIMARY KEY," \
                                   "LOGIN CHAR(50)," \
-                                  "PASSWORD CHAR(50) );");
+                                  "PASSWORD BLOB );");
         if( SQLITE_OK != sqlite3_exec( db, sqlCreateReq.c_str(), callback, 0, &errMsg ) )
         {
             std::cerr << "Problems with req exec" << std::endl

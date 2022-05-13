@@ -63,6 +63,7 @@ void AddNewPasswordToBase()
     std::cin >> userName;
     std::cout << "Input User password: ";
     std::string userPasswd;
+    // std::vector< uint8_t > userPasswd;
     if( GetUserPassword( userPasswd ) )
     {
         exit( 1 );
@@ -74,6 +75,7 @@ void AddNewPasswordToBase()
     {
         std::cerr << "Can't sugn up new user." << std::endl;
     }
+    // std::string userPasswdStr( reinterpret_cast< char* >( userPasswd.data()), userPasswd.size() );
     if( InsertToDataBase( passwordsBase, siteAddr, userName, userPasswd ) )
     {
         std::cerr << "Error adding to database." << std::endl;
